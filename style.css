@@ -1,0 +1,829 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #07111a;
+  --bg-secondary: #0a1723;
+  --panel: #0d1c2a;
+  --panel-light: #102335;
+  --border: #1b3448;
+
+  --text: #f1f5f9;
+  --muted: #8fa3b5;
+
+  --blue: #3d8bfd;
+  --blue-light: #62a5ff;
+
+  --green: #42d878;
+  --red: #ff555f;
+  --yellow: #f6c945;
+  --purple: #a875ff;
+}
+
+
+/* ========================================
+   BASE
+======================================== */
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(30, 93, 160, 0.25),
+      transparent 40%
+    ),
+    linear-gradient(
+      135deg,
+      #050c13,
+      #07131e 50%,
+      #061019
+    );
+
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.dashboard {
+  width: min(1450px, 94%);
+  margin: auto;
+  padding: 25px 0 50px;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.dash-header {
+  position: relative;
+  min-height: 145px;
+  padding: 5px 0 25px;
+  border-bottom: 1px solid var(--border);
+}
+
+.eyebrow,
+.panel-eyebrow,
+.date-label,
+.section-title,
+.summary-label {
+  font-family: "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px rgba(66, 216, 120, 0.8);
+}
+
+.header-title {
+  text-align: center;
+  margin-top: -5px;
+}
+
+.header-title h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(2rem, 4vw, 3.3rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.header-title h1 span {
+  color: var(--blue-light);
+}
+
+.header-title p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+
+/* ========================================
+   DATE & TIME
+======================================== */
+
+.top-datetime {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  text-align: right;
+
+  padding: 9px 14px;
+
+  border-right: 2px solid var(--blue);
+}
+
+.top-datetime .date-label {
+  margin-bottom: 5px;
+}
+
+#currentDateTime {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--blue-light);
+  font-size: 0.82rem;
+}
+
+
+/* ========================================
+   CONNECTION
+======================================== */
+
+.connection-card {
+  position: absolute;
+  left: 0;
+  bottom: 20px;
+
+  width: 280px;
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
+  background: rgba(13, 28, 42, 0.9);
+}
+
+.connection-card summary {
+  padding: 10px 13px;
+  cursor: pointer;
+
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+
+  color: var(--muted);
+}
+
+.conn-row {
+  display: flex;
+  gap: 7px;
+  padding: 0 12px 8px;
+}
+
+.conn-row input {
+  width: 100%;
+  min-width: 0;
+
+  padding: 8px 9px;
+
+  color: var(--text);
+  background: #07121c;
+
+  border: 1px solid var(--border);
+  border-radius: 6px;
+
+  outline: none;
+}
+
+.conn-row input:focus {
+  border-color: var(--blue);
+}
+
+.conn-row button {
+  border: 0;
+  border-radius: 6px;
+
+  padding: 0 13px;
+
+  color: white;
+  background: var(--blue);
+}
+
+.conn-status {
+  padding: 0 12px 11px;
+
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+
+/* ========================================
+   GENERAL SECTIONS
+======================================== */
+
+.lights-section,
+.security-section,
+.alarm-section {
+  margin-top: 25px;
+}
+
+.section-header {
+  margin-bottom: 12px;
+}
+
+.section-header h2 {
+  margin-top: 5px;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.05rem;
+}
+
+
+/* ========================================
+   MAIN DASHBOARD LAYOUT
+======================================== */
+
+.security-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+
+/* ========================================
+   LED LIGHTS
+======================================== */
+
+.led-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.panel,
+.system-panel {
+  position: relative;
+
+  padding: 18px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.025),
+      transparent
+    ),
+    var(--panel);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.15);
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.panel:hover,
+.system-panel:hover {
+  border-color: #2a4c67;
+  transform: translateY(-2px);
+}
+
+.panel-eyebrow {
+  margin-bottom: 7px;
+}
+
+.panel h2,
+.system-panel h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1rem;
+}
+
+
+/* ========================================
+   LIGHT BULB
+======================================== */
+
+.bulb-stage {
+  height: 145px;
+
+  display: grid;
+  place-items: center;
+}
+
+.bulb-wrap {
+  position: relative;
+
+  width: 80px;
+  height: 95px;
+
+  display: grid;
+  place-items: center;
+}
+
+.bulb {
+  position: relative;
+  z-index: 2;
+
+  width: 57px;
+  height: 57px;
+
+  border-radius: 50%;
+
+  background: #1b2935;
+
+  border: 3px solid #30404d;
+
+  transition:
+    0.25s ease;
+}
+
+.bulb::after {
+  content: "";
+
+  position: absolute;
+
+  left: 19px;
+  bottom: -21px;
+
+  width: 19px;
+  height: 25px;
+
+  border-radius: 0 0 5px 5px;
+
+  background: #293944;
+}
+
+.bulb-glow {
+  position: absolute;
+
+  width: 110px;
+  height: 110px;
+
+  border-radius: 50%;
+
+  opacity: 0;
+
+  filter: blur(25px);
+
+  transition: opacity 0.3s ease;
+}
+
+
+/* RED / LIVING ROOM */
+
+.panel[data-color="red"] .bulb.on {
+  background: #ff535f;
+  border-color: #ff8990;
+
+  box-shadow:
+    0 0 30px rgba(255, 83, 95, 0.8);
+}
+
+.panel[data-color="red"] .bulb-glow.on {
+  opacity: 0.3;
+  background: #ff535f;
+}
+
+
+/* GREEN / BEDROOM */
+
+.panel[data-color="green"] .bulb.on {
+  background: #42d878;
+  border-color: #83efa7;
+
+  box-shadow:
+    0 0 30px rgba(66, 216, 120, 0.8);
+}
+
+.panel[data-color="green"] .bulb-glow.on {
+  opacity: 0.3;
+  background: #42d878;
+}
+
+
+/* YELLOW / PORCH */
+
+.panel[data-color="yellow"] .bulb.on {
+  background: #f6c945;
+  border-color: #ffe48a;
+
+  box-shadow:
+    0 0 30px rgba(246, 201, 69, 0.8);
+}
+
+.panel[data-color="yellow"] .bulb-glow.on {
+  opacity: 0.3;
+  background: #f6c945;
+}
+
+
+/* ========================================
+   STATUS
+======================================== */
+
+.status-line {
+  color: var(--muted);
+  font-size: 0.73rem;
+}
+
+.status-line b {
+  color: var(--text);
+
+  font-family: "JetBrains Mono", monospace;
+}
+
+
+/* ========================================
+   BUTTONS
+======================================== */
+
+.controls {
+  display: flex;
+  gap: 7px;
+
+  margin-top: 13px;
+}
+
+.toggle {
+  flex: 1;
+
+  padding: 8px 10px;
+
+  border-radius: 6px;
+
+  color: var(--text);
+
+  background: #122435;
+
+  border: 1px solid var(--border);
+
+  font-size: 0.72rem;
+
+  transition:
+    0.2s ease;
+}
+
+.toggle:hover {
+  transform: translateY(-1px);
+}
+
+.btn-on:hover {
+  background: rgba(66, 216, 120, 0.15);
+  border-color: var(--green);
+}
+
+.btn-off:hover {
+  background: rgba(255, 85, 95, 0.15);
+  border-color: var(--red);
+}
+
+
+/* ========================================
+   MOTION SENSOR
+======================================== */
+
+.motion-panel {
+  min-height: 205px;
+}
+
+.sensor-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 120px;
+  height: 120px;
+
+  margin: 20px auto 15px;
+
+  border-radius: 50%;
+
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.safe {
+  color: var(--green);
+
+  border: 2px solid var(--green);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(66,216,120,0.12),
+      transparent 65%
+    );
+
+  box-shadow:
+    0 0 25px rgba(66,216,120,0.15);
+}
+
+.triggered {
+  color: var(--red);
+
+  border: 2px solid var(--red);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,85,95,0.12),
+      transparent 65%
+    );
+
+  box-shadow:
+    0 0 25px rgba(255,85,95,0.2);
+}
+
+.motion-panel .status-line {
+  text-align: center;
+}
+
+
+/* ========================================
+   TEMPERATURE
+======================================== */
+
+.temperature-panel {
+  min-height: 205px;
+}
+
+.temperature-value {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+
+  margin: 55px 0 15px;
+
+  font-family: "JetBrains Mono", monospace;
+}
+
+.temperature-value span:first-child {
+  font-size: 3.3rem;
+  color: var(--blue-light);
+}
+
+.temperature-value span:last-child {
+  color: var(--muted);
+}
+
+
+/* ========================================
+   SOUND
+======================================== */
+
+.sound-panel {
+  min-height: 205px;
+}
+
+.sound-status {
+  margin: 48px 0 15px;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 2.8rem;
+  font-weight: 600;
+
+  color: var(--green);
+}
+
+.sound-active .sound-status {
+  color: var(--red);
+}
+
+
+/* ========================================
+   OLED
+======================================== */
+
+.oled-panel {
+  min-height: 205px;
+}
+
+.oled-screen {
+  width: min(310px, 100%);
+
+  margin: 20px auto 13px;
+
+  padding: 15px;
+
+  border: 3px solid #263333;
+  border-radius: 6px;
+
+  background: #030707;
+
+  color: #aaffdd;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 0.7rem;
+  line-height: 1.9;
+
+  box-shadow:
+    inset 0 0 18px rgba(66,216,120,0.06);
+}
+
+.oled-title {
+  margin-bottom: 3px;
+
+  font-weight: 600;
+}
+
+
+/* ========================================
+   ALARM
+======================================== */
+
+.alarm-section {
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 20px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--panel);
+}
+
+.alarm-section > .panel-eyebrow {
+  grid-column: 1 / -1;
+}
+
+.alarm-section h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
+}
+
+.alarm-card {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.alarm-state {
+  margin-top: 6px;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.alarm-indicator {
+  padding: 9px 17px;
+
+  border-radius: 999px;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.alarm-section .controls {
+  width: 260px;
+  margin-top: 0;
+}
+
+
+/* ========================================
+   SYSTEM SUMMARY
+======================================== */
+
+.system-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+.summary-item {
+  padding: 14px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: var(--panel);
+}
+
+.summary-label {
+  display: block;
+  margin-bottom: 7px;
+}
+
+.summary-item > span:last-child {
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 0.75rem;
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1050px) {
+
+  .led-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .security-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+@media (max-width: 750px) {
+
+  .dashboard {
+    width: 92%;
+  }
+
+  .dash-header {
+    min-height: 245px;
+  }
+
+  .top-datetime {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    width: fit-content;
+
+    margin-left: auto;
+    margin-top: 20px;
+  }
+
+  .header-title {
+    margin-top: 25px;
+  }
+
+  .connection-card {
+    bottom: 10px;
+  }
+
+  .security-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .alarm-section {
+    grid-template-columns: 1fr;
+  }
+
+  .alarm-section .controls {
+    width: 100%;
+  }
+
+  .system-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+@media (max-width: 500px) {
+
+  .system-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .conn-row {
+    flex-direction: column;
+  }
+
+  .conn-row button {
+    padding: 9px;
+  }
+
+  .header-title h1 {
+    font-size: 2rem;
+  }
+
+}
